@@ -1,0 +1,25 @@
+﻿@page "/lesson22B"
+<PageTitle>Receiving Page</PageTitle>
+
+<h3>Receiving Page</h3>
+
+<p>
+    This page can be reach from
+    <ul>
+        <li>a) menu</li>
+        <li>b) another page without a parameter</li>
+        <li>c) another page with a parameter</li>
+    </ul>
+</p>
+
+<ActionButton Label="Go Back" ButtonStyle="btn-outline-info" OnClick="BackToPage" />
+@code {
+
+    [Inject]
+    NavigationManager navManager { get; set; }
+
+    private void BackToPage ()
+    {
+        navManager.NavigateTo("/lesson22");
+    }
+}
