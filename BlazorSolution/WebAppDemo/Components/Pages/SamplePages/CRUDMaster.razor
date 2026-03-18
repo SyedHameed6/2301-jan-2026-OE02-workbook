@@ -1,5 +1,64 @@
-﻿<h3>CRUDMaster</h3>
+﻿@page "/lesson24"
+<PageTitle>CRUD and Components</PageTitle>
+
+@*
+    Additional Namespaces
+*@
+@using WebAppDemo.DataModels;
+
+<h1>CRUD Master</h1>
+<h4>....  using reusable form and table components</h4>
+
+<blockquote>
+    This demo will contain:
+    <br />
+    <ul>
+        <li>use of reusable components</li>
+        <li>CallBacks</li>
+        <li>Parameters</li>
+        <li>EditForm component</li>
+        <li>Table component</li>
+        <li>local collection to hold data (List&lt;T&gt;)</li>
+    </ul>
+</blockquote>
+
+<AssessmentForm OnAdd="StoreMark" />
+
+@*
+    quick dump of the collection
+*@
+@if (_assessments.Count > 0)
+{
+    <ul>
+    @foreach(var item in _assessments)
+    {
+       <li>@item.Name @item.Weight @item.Mark @item.MaxMark @item.WeightedMark</li>
+    }
+    </ul>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <p>There are no marks on file.</p>
+        </div>
+    </div>
+}
+
 
 @code {
+    //an instance of List<T> where T is the entity
+    //the initial creation of the list will result in an empty instance
+    public List<Assessment> _assessments = new();
+
+    //where is the parameter value coming from
+    //it will be sent to this method from the called component
+    //the method is on the component tag as an named attribute (OnAdd)
+    //OnAdd is an eventcallback from the component
+    public void StoreMark(Assessment mark)
+    {
+        _assessments.Add(mark);
+    }
+
 
 }

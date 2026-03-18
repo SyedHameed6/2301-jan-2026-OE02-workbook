@@ -2,7 +2,9 @@
 
 namespace WebAppDemo.DataModels
 {
-    public class Assessments
+    //the IValidatableObject is required for the custom validate at the 
+    //  botton of this entity
+    public class Assessment : IValidatableObject
     {
         [Required(ErrorMessage ="Assessment Name is required. Can not be empty.")]
         [StringLength(15, ErrorMessage ="Assessment Name is limited to 15 characters.")]
@@ -21,5 +23,24 @@ namespace WebAppDemo.DataModels
         //  true value: 0
         //  false value: ((decimal)Mark / (decimal)MaxMark)* (decimal)Weight
         public decimal WeightedMark => MaxMark == 0 ? 0 : ((decimal)Mark / (decimal)MaxMark) * Weight;
+
+        //how can one validate multiple properties together as a DataAnnotation
+        //You cannot
+        //However, you CAN create your own custom validation and tie it to
+        //  a specific property
+
+        //NOTE: this validation will not execute if another annotation error exists elsewhere during the validation
+        //      order: Property validation
+        //              if property validation is good then this executes.
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Mark > MaxMark)
+            {
+                yield return new ValidationResult(
+                    "Mark must be less than or equal to MaxMark",
+                    new[] { nameof(Mark) }   // attaches error to Mark
+                );
+            }
+        }
     }
 }
